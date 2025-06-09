@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Position 属性详解</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #1a2a6c;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .position-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .position-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .position-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .position-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #1a2a6c;
+            display: flex;
+            align-items: center;
+        }
+        
+        .position-card h2::before {
+            content: "";
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .static h2::before { background: #4CAF50; }
+        .relative h2::before { background: #2196F3; }
+        .absolute h2::before { background: #FF9800; }
+        .fixed h2::before { background: #9C27B0; }
+        .sticky h2::before { background: #E91E63; }
+        
+        .position-card p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .position-card .code {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .position-card .example {
+            height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            margin: 15px 0;
+            position: relative;
+            background: #f9f9f9;
+            overflow: hidden;
+        }
+        
+        /* Static Positioning */
+        .static .box {
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Relative Positioning */
+        .relative .box {
+            width: 80px;
+            height: 80px;
+            background: #2196F3;
+            position: relative;
+            top: 20px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .relative .original {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            background: rgba(33, 150, 243, 0.3);
+            border: 1px dashed #2196F3;
+        }
+        
+        /* Absolute Positioning */
+        .absolute .example {
+            position: relative;
+        }
+        
+        .absolute .parent {
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid #FF9800;
+            position: relative;
+        }
+        
+        .absolute .box {
+            width: 80px;
+            height: 80px;
+            background: #FF9800;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Fixed Positioning */
+        .fixed .box {
+            width: 80px;
+            height: 80px;
+            background: #9C27B0;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Sticky Positioning */
+        .sticky .scroll-container {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            background: white;
+        }
+        
+        .sticky .sticky-header {
+            background: #E91E63;
+            color: white;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-weight: bold;
+        }
+        
+        .sticky .content {
+            padding: 15px;
+            height: 800px;
+            background: linear-gradient(to bottom, #f8f8f8, #e0e0e0);
+        }
+        
+        .comparison {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #1a2a6c;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .position-types {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CSS Position 属性详解</h1>
+            <p class="subtitle">position 属性决定了元素在文档中的定位方式，是 CSS 布局的核心概念之一。掌握不同的定位方式对于创建复杂的网页布局至关重要。</p>
+        </header>
+        
+        <div class="position-types">
+            <!-- Static Positioning -->
+            <div class="position-card static">
+                <h2>Static (静态定位)</h2>
+                <p>默认定位方式。元素遵循正常的文档流，不受 top、right、bottom、left 和 z-index 属性的影响。</p>
+                <div class="code">position: static;</div>
+                <div class="example">
+                    <div class="box">Static</div>
+                </div>
+                <p><strong>应用场景：</strong>普通文档流中的元素，不需要特殊定位时使用。</p>
+            </div>
+            
+            <!-- Relative Positioning -->
+            <div class="position-card relative">
+                <h2>Relative (相对定位)</h2>
+                <p>元素相对于其正常位置进行定位。不影响其他元素的位置（原位置保留）。</p>
+                <div class="code">position: relative;<br>top: 20px;<br>left: 30px;</div>
+                <div class="example">
+                    <div class="original"></div>
+                    <div class="box">Relative</div>
+                </div>
+                <p><strong>应用场景：</strong>微调元素位置，作为绝对定位元素的参照容器。</p>
+            </div>
+            
+            <!-- Absolute Positioning -->
+            <div class="position-card absolute">
+                <h2>Absolute (绝对定位)</h2>
+                <p>元素相对于最近的非 static 定位祖先元素定位。脱离文档流，不占据空间。</p>
+                <div class="code">position: absolute;<br>bottom: 20px;<br>right: 20px;</div>
+                <div class="example">
+                    <div class="parent">
+                        <div class="box">Absolute</div>
+                    </div>
+                </div>
+                <p><strong>应用场景：</strong>弹出菜单、工具提示、自定义控件等需要精确定位的元素。</p>
+            </div>
+            
+            <!-- Fixed Positioning -->
+            <div class="position-card fixed">
+                <h2>Fixed (固定定位)</h2>
+                <p>元素相对于浏览器视口定位。即使页面滚动，元素位置也不会改变。</p>
+                <div class="code">position: fixed;<br>bottom: 20px;<br>right: 20px;</div>
+                <div class="example">
+                    <p>右下角的紫色圆形是固定定位元素，滚动页面时它会保持在视口固定位置。</p>
+                </div>
+                <div class="box">↑</div>
+                <p><strong>应用场景：</strong>导航栏、返回顶部按钮、聊天窗口等需要始终可见的元素。</p>
+            </div>
+            
+            <!-- Sticky Positioning -->
+            <div class="position-card sticky">
+                <h2>Sticky (粘性定位)</h2>
+                <p>元素根据滚动位置在 relative 和 fixed 定位之间切换。</p>
+                <div class="code">position: sticky;<br>top: 0;</div>
+                <div class="scroll-container">
+                    <div class="sticky-header">粘性标题 (滚动试试)</div>
+                    <div class="content">
+                        <p>向下滚动页面，标题会固定在顶部。</p>
+                        <p>继续滚动...</p>
+                        <p>更多内容...</p>
+                    </div>
+                </div>
+                <p><strong>应用场景：</strong>表格标题、导航栏在滚动时固定在页面顶部。</p>
+            </div>
+        </div>
+        
+        <div class="comparison">
+            <h2>Position 属性对比</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>定位类型</th>
+                        <th>定位基准</th>
+                        <th>是否脱离文档流</th>
+                        <th>影响其他元素</th>
+                        <th>常用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>static</td>
+                        <td>正常文档流</td>
+                        <td>否</td>
+                        <td>无</td>
+                        <td>默认布局</td>
+                    </tr>
+                    <tr>
+                        <td>relative</td>
+                        <td>自身原始位置</td>
+                        <td>否（原位置保留）</td>
+                        <td>不影响其他元素布局</td>
+                        <td>微调位置、定位上下文</td>
+                    </tr>
+                    <tr>
+                        <td>absolute</td>
+                        <td>最近的非 static 祖先</td>
+                        <td>是</td>
+                        <td>原位置被占用</td>
+                        <td>弹出层、自定义控件</td>
+                    </tr>
+                    <tr>
+                        <td>fixed</td>
+                        <td>浏览器视口</td>
+                        <td>是</td>
+                        <td>原位置被占用</td>
+                        <td>固定导航、悬浮按钮</td>
+                    </tr>
+                    <tr>
+                        <td>sticky</td>
+                        <td>最近滚动容器</td>
+                        <td>否（直到粘住）</td>
+                        <td>粘住时可能覆盖内容</td>
+                        <td>滚动时固定的标题</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <footer>
+        <p>CSS Position 属性详解 | 通过实际示例展示不同定位方式的效果和应用场景</p>
+    </footer>
+</body>
+</html>

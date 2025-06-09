@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../vue/project1"
 		}
 	],
 	"settings": {}
