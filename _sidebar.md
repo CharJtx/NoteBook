@@ -12,11 +12,11 @@
   * [基础](VUE\基础.md)
   * [git](VUE\git.md)
 * 计算机网络
-  * [应用层](Computer Network\Application_Layer.md)
-  * [网络层](Computer Network\Network_Layer.md)
-  * [总结](Computer Network\Summary.md)
-  * [交换层](Computer Network\Transport_Layer.md)
+  * [应用层](Computer_Network\Application_Layer.md)
+  * [网络层](Computer_Network\Network_Layer.md)
+  * [总结](Computer_Network\Summary.md)
+  * [交换层](Computer_Network\Transport_Layer.md)
 * 操作系统
-  * [死锁](Computer OS\Death Lock.md)
-  * [进程管理](Computer OS\Process Manager.md)
-  * [总结](Computer OS\Summary.md)
+  * [死锁](Computer_OS\Death_Lock.md)
+  * [进程管理](Computer_OS\Process_Manager.md)
+  * [总结](Computer_OS\Summary.md)
