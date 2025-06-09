@@ -102,7 +102,7 @@
 - [VUE2和VUE3 的区别是什么？Vue3有哪些优点](#vue2和vue3-的区别是什么vue3有哪些优点)
 # 1.谈谈你对vue的理解
 官方：Vue是一套用于构建用户界面的渐进式框架，Vue的核心库只关注视图层
-![](VUE\image.png)
+![](image.png)
 ## 1.1 声明式框架
 命令式和声明式的区别
 * JQ都是命令式的，命令式框架重要特点就是关注过程
@@ -122,12 +122,12 @@ let total12 = numbers.reduce(function(memo,current){
 ```
 ## 1.2 MVVM 
 Model-View-ViewModel
-![](VUE\image-1.png)
+![](image-1.png)
 1. 将模型（Model）转化成视图（View），即将后端传递的数据转化成所看到的页面，实现的方式是：数据绑定。
 2. 将视图（View）转化成模型（Model），即将所看到的页面转化成后端的数据，实现的方式是：DOM 事件监听。当这两个方向的数据转换都实现时，我们称之为数据的双向绑定。
 Model-View-Controller
-![](VUE\image-2.png)
-![](VUE\image-3.png)
+![](image-2.png)
+![](image-3.png)
 backbone+underscore+jquery
 MVVM 与 MVC 最大的区别就是：MVVM 实现了 View 和 Model 的自动同步，也就是当 Model 的属性改变时，我们不用再自己手动操作 Dom 元素来改变 View 的显示，而是改变属性后该属性对应 View 层显示会自动改变（双向绑定）。
 ## 1.3 虚拟dom
@@ -235,8 +235,8 @@ data.info.age = 25; // 触发嵌套对象的 set → 输出 "更新属性: age"
 data.likes.push('运动'); // 触发重写的数组方法 → 输出 "视图更新"
 data.newProp = '测试'; // 无响应（需手动处理）
 ```
-![](VUE\image-4.png)
-![](VUE\image-5.png)
+![](image-4.png)
+![](image-5.png)
 
 #### Proxy
 * ES6新增的元变成特性，用于创建一个对象的代理，拦截并自定义对象的基本操作。
@@ -276,7 +276,7 @@ Reflect 的方法与 Object 的某些方法功能相似，但行为更规范。R
 * 每个属性都拥有自己的dep属性，存放他所以来的watcher，当属性变化后会通知自己对应的watcher区就更新
 * 默认在初始化的时候会调用render函数，此时会触发属性依赖收集 dep.depend
 * 当属性发生修改是会触发watcher更新dep.notify（）
-* ![](VUE\image-6.png)
+* ![](image-6.png)
 ### Dep类
 Dep 是依赖收集的核心，它的主要作用是管理所有的 Watcher。Dep 类中有一个静态属性 target，它指向当前正在计算的 Watcher，保证了同一时间全局只有一个 Watcher 被计算。Dep 类中还有一个 subs 属性，它是一个 Watcher 的数组，用来存储所有依赖这个 Dep 的 Watcher。
 
@@ -683,7 +683,7 @@ Vue中含有模板编译功能，他的主要作用是将用户编写的template
 * 初始化选项：在实例化过程中，Vue 会对传入的选项进行解析和合并，包括 data、computed、methods、watch 等选项。同时也初始化了provide 和 inject 方法。内部会对数据进行劫持，对象采用defineProperty数组采用方法重写
 * 编译模板：再看一下用户是否传入了el属性和template或者render。render的优先级更高，如果指定了 template 选项，Vue 将会调用编译器将模板编译成渲染函数。如果没有指定 template，就会将挂载元素的内容作为模板。
 * Vue进行更新的时候采用虚拟DOM方式进行diff算法更新
-![](VUE\image-7.png)
+![](image-7.png)
 # Vue.observable 有了解过吗？说说看
 在非父子组件通信时，可以使用eventBus或者使用状态管理工具，但是功能不复杂的时候我们可以考虑用Vue。observable
 # v-if和v-for哪个优先级更高
@@ -719,11 +719,11 @@ vue基于虚拟DOM做更新。diff的核心就是比较两个虚拟节点的差�
    3. 老的儿子是文本，新的儿子是文本，直接更新文本节点
    4. 老的是列表，新的是列表，updateChildren
 4. 优化比较： 
-   1. 头头、![](VUE\image-8.png)
-   2. 尾尾、![](VUE\image-9.png)
-   3. 尾头、![](VUE\image-10.png)![](VUE\image-11.png)![](VUE\image-12.png)
-   4. 头尾 ![](VUE\image-13.png)![](VUE\image-14.png)
-5. 对比查找进行复用![](VUE\image-15.png)![](VUE\image-16.png)![](VUE\image-17.png)
+   1. 头头、![](image-8.png)
+   2. 尾尾、![](image-9.png)
+   3. 尾头、![](image-10.png)![](image-11.png)![](image-12.png)
+   4. 头尾 ![](image-13.png)![](image-14.png)
+5. 对比查找进行复用![](image-15.png)![](image-16.png)![](image-17.png)
 6. vue3中使用了最长递增子序列来实现diff优化
 # 请说明Vue中key的作用和原理，谈谈你对它的理解
 ## 核心作用
@@ -1691,7 +1691,7 @@ Vue允许你以一个工厂函数的方式定义你的组件，这个工厂函�
    1. 状态，驱动应用的数据源；
    2. 视图，以声明方式将状态映射到视图；
    3. 操作，响应在视图上的用户输入导致的状态变化。
-   4. ![](VUE\image-19.png)
+   4. ![](image-19.png)
 3. 核心概念
    1. State
       1. Vuex 使用单一状态树——是的，用一个对象就包含了全部的应用层级状态。至此它便作为一个“唯一数据源 (SSOT)”而存在。这也意味着，每个应用将仅仅包含一个 store 实例。单一状态树让我们能够直接地定位任一特定的状态片段，在调试的过程中也能轻易地取得整个当前应用状态的快照。
@@ -1746,5 +1746,5 @@ store.state.b // -> moduleB 的状态
 
 
 # VUE2和VUE3 的区别是什么？Vue3有哪些优点
-![](VUE\image-67.png)
+![](image-67.png)
 
