@@ -154,7 +154,6 @@ const proxy = new Proxy(target,{
 })
 // 典型用途
 const data = {count:0};
-
 const proxy = new Proxy(data,{
   get(target,prop){
     console.log(`读取 ${prop}`);
@@ -212,9 +211,7 @@ class Dep {
     });
   }
 }
-
 Dep.target = null; // 全局的当前正在计算的Watcher
-
 class Watcher {
   constructor() {
     Dep.target = this;
@@ -228,13 +225,11 @@ class Watcher {
     // 执行更新操作
   }
 }
-
 // 示例用法
 let dep = new Dep();
 let watcher = new Watcher();
 dep.depend(); // 将当前Dep与正在计算的Watcher关联起来
 dep.notify(); // 通知所有依赖这个Dep的Watcher进行更新
-
 ```
 
 * Dep类和Watcher类是数据响应式系统的核心，理解其原理对于理解Vue等前端框架的工作原理非常重要。
@@ -274,7 +269,6 @@ class Watcher {
 function pushTarget (_target) {
   Dep.target = _target
 }
-
 ```
 
 #### VUE类
@@ -401,7 +395,6 @@ new Vue({
   }
 });
 //在上面的代码中，我们定义了一个computed属性fullName，它根据firstName和lastName的值计算出一个完整的姓名。每当firstName或lastName的值发生变化时，fullName会自动更新。
-
 // 在VUE3 中使用的是effect
 state = reactive({firstname:'1',lastname:'2'})
 const fullname = computed(()=>{
@@ -416,7 +409,6 @@ const fullname = computed(()=>{
   </div>
 <template>
 ```
-
 watch 是一个观察者，它可以监听一个数据的变化，并在数据变化时执行相应的回调函数。watch 的好处有：
 * 灵活性：watch 可以监听任意数据的变化，不限于计算属性的依赖关系。
 * 异步操作：watch 可以执行异步操作，比如发送网络请求或者执行复杂的计算。
@@ -440,6 +432,7 @@ new Vue({
 });
 // 在上面的代码中，我们定义了两个watch属性，分别监听firstName和lastName的变化。每当firstName或lastName的值发生变化时，相应的处理函数会被调用，并更新fullName的值。
 ```
+
 ### 总结
 * computed是基于它们的依赖进行缓存的，只有当依赖发生变化时，计算属性才会重新计算；而watch则是在属性变化时立即执行相应的操作。
 * computed适用于那些需要根据其他属性计算出一个新值的场景；而watch适用于那些需要在属性变化时执行异步或开销较大的操作的场景。
@@ -453,7 +446,6 @@ new Vue({
 ```javascript
 
 import { ref } from 'vue';
-
 const count = ref(0) // 创建一个响应式的数字
 console.log(count.value) // 访问值
 count.value++ // 修改值
@@ -464,9 +456,7 @@ count.value++ // 修改值
 返回值: reactive 直接返回一个响应式代理对象，无需通过 .value 访问
 使用场景: 适合处理复杂对象或嵌套数据结构
 ```javascript
-
 import { reactive } from 'vue';
-
 const state = reactive({
   count: 0,
   name: 'Vue'
@@ -502,7 +492,8 @@ Vue中含有模板编译功能，他的主要作用是将用户编写的template
       * </div>
       * </template>
   * 语法分析：根据标记构建树状结构的 AST。每个节点描述元素类型、属性、子节点等信息。例如：
-  * ```javascript
+
+```javascript
     {
       type: 1, // Element type
       tag: 'div',
@@ -542,8 +533,8 @@ Vue中含有模板编译功能，他的主要作用是将用户编写的template
         }
       ]
     }
+```
 
-    ```
 * 对静态语法做静态标记，`markUp diff`来做优化的静态节点跳过diff操作
   * 静态节点标记：编译器标记 AST 中的静态节点，这些节点不会随着数据变化而变化。静态标记的作用是避免不必要的重新渲染，提高性能。
     * ```json   
@@ -588,10 +579,12 @@ Vue中含有模板编译功能，他的主要作用是将用户编写的template
 在非父子组件通信时，可以使用eventBus或者使用状态管理工具，但是功能不复杂的时候我们可以考虑用Vue。observable
 # v-if和v-for哪个优先级更高
 v-for 和 v-if 避免在同一个标签中使用。如果遇到需要同时使用时可以考虑携程计算属性的方式
+
 ```html
 <!--应当避免-->
 <li v-for="l in arr" v-if="exists"></li>
 ```
+
 * 在vue2中，先解析v-for再解析v-if,会导致性能浪费哦
 * 在vue3中，先解析v-if在解析v-for
 # 生命周期有哪些
@@ -607,6 +600,7 @@ v-for 和 v-if 避免在同一个标签中使用。如果遇到需要同时使�
 |destory|实例销毁后，所有子实例和事件监听器被移除|最终清理（如移除全局事件）|
 |beforeUnmount|实例销毁前，仍完整可用|实例卸载前清理资源|
 |unmounted|实例销毁后，所有子实例和事件监听器被移除|最终清理（如移除全局事件）|
+
 # Vue 中 diff算法原理
 ## 1.1 Diff概念
 vue基于虚拟DOM做更新。diff的核心就是比较两个虚拟节点的差异。Vue的diff算法是评级比较，不考虑跨级比较的情况。内部采用深度递归的方式+双指针的方式进行比较
@@ -658,6 +652,7 @@ Vue.use 是 Vue.js 框架中的一个全局方法，主要用于安装插件以�
 * 通过全局混入来添加一些组件选项
 * 添加Vue实例方法，通过把他们添加到Vue。prototype上实现
 ## 实现原理
+
 ```Typescript
 // use方法
 export function initUse(Vue: GlobalAPI) {
@@ -669,7 +664,6 @@ export function initUse(Vue: GlobalAPI) {
     if (installedPlugins.indexOf(plugin) > -1) {
       return this
     }
-
     // additional parameters
     // 取vue.use参数,toArray() 方法代码在下一个代码块
     const args = toArray(arguments, 1)
@@ -694,6 +688,7 @@ let plugin1 = {
 # Vue.extend方法的作用
 Vue.extend 是 Vue.js 提供的全局 API，主要用于创建可复用的组件构造器，其核心作用是通过继承 Vue 的基础功能来扩展或定制组件。以下是其具体作用和原理的详细解析：
 源码：
+
 ```Typescript
 export function initExtend(Vue: GlobalAPI) {
   /**
@@ -703,7 +698,6 @@ export function initExtend(Vue: GlobalAPI) {
    */
   Vue.cid = 0
   let cid = 1
-
   /**
    * Class inheritance
    */
@@ -769,6 +763,7 @@ export function initExtend(Vue: GlobalAPI) {
   }
 }
 ```
+
 1. Vue.extend 接收一个包含组件选项的对象（如 template、data、methods 等），返回一个新的组件构造函数。这个构造函数可以多次实例化，实现组件的复用。
     ``` javascript
     const MyComponent = Vue.extend({
@@ -796,7 +791,6 @@ export function initExtend(Vue: GlobalAPI) {
 ```typescript
 
 function Vue(){
-  
 }
 
 Vue.extend = function(options){
@@ -829,8 +823,6 @@ let ChildFunction = Vue.extend({
     return {name:"xxx"}
   }
 })
-  
-
 let child1= new ChildFunction()
 let child2 = new ChildFunction();
 console.log(child1.data.name);
@@ -914,7 +906,6 @@ Vue 中的 slot（插槽） 是一种内容分发机制，允许父组件向子�
           <slot>默认按钮</slot> <!-- 默认内容 -->
         </button>
       </template>
-
       <!-- 父组件使用 -->
       <MyButton>提交</MyButton> <!-- 显示“提交” -->
       <MyButton><i class="icon-save"/> 保存</MyButton> <!-- 插入图标和文本 -->
@@ -932,15 +923,14 @@ Vue 中的 slot（插槽） 是一种内容分发机制，允许父组件向子�
               <footer><slot name="footer"/></footer>
             </div>
           </template>
-
           <!-- 父组件填充具名插槽 -->
           <Layout>
             <template v-slot:header><h1>标题</h1></template>
             <p>主体内容</p>
             <template v-slot:footer><p>页脚</p></template>
           </Layout>
-
       ```
+
 3. 数据驱动的动态内容（作用域插槽）Slot-Scope 
    1. 场景：子组件需要向父组件传递数据，例如列表项渲染、表单控件等。在 Vue 3 中，slot-scope 被废弃，取而代之的是新的 v-slot 指令。尽管如此，理解 slot-scope 的工作原理依然是非常重要的，因为它能够帮助我们更好地理解 Vue 的插槽机制。
    2. 示例
@@ -951,7 +941,6 @@ Vue 中的 slot（插槽） 是一种内容分发机制，允许父组件向子�
           <slot v-for="item in items" :item="item">{{ item }}</slot>
         </ul>
       </template>
-
       <script>
       export default {
         props: {
@@ -971,7 +960,6 @@ Vue 中的 slot（插槽） 是一种内容分发机制，允许父组件向子�
           </template>
         </MyList>
       </template>
-
       <script>
       export default {
         data() {
@@ -1012,7 +1000,6 @@ Vue 中的 slot（插槽） 是一种内容分发机制，允许父组件向子�
     </tbody>
   </table>
 </template>
-
 <script>
 export default {
   props: {
@@ -1047,7 +1034,6 @@ export default {
     </template>
   </MyTable>
 </template>
-
 <script>
 export default {
   data() {
@@ -1074,6 +1060,7 @@ export default {
 }
 </script>
 ```
+
 # 什么是双向绑定，实现原理是什么
 
 ## 双向绑定的概念
@@ -1227,7 +1214,6 @@ const vHighlight = {
   }
 }
 </script>
-
 <template>
   <p v-highlight>This sentence is important!</p>
 </template>
@@ -1259,6 +1245,7 @@ this.$nextTick( => {
 });
 
 ```
+
 2. 触发动画或过渡效果: 确保动画在 DOM 渲染完成后执行：
 ```javascript
 this.isVisible = true;
@@ -1267,6 +1254,7 @@ this.$nextTick( => {
 });
 
 ```
+
 3. 处理异步操作依赖: 在 AJAX 请求或定时器回调中更新数据后，确保后续操作基于最新 DOM：
 ```javascript
 fetchData().then( => {
@@ -1319,7 +1307,6 @@ keep-alive 是 vue 中干的内置组件，能在组件切换过程会缓存组�
   component: Detail,
   meta: { keepAlive: true }
 }
-
 ```
 
 # Vue 中使用了哪些设计模式
@@ -1386,10 +1373,12 @@ export default {
 }
 </script>
 ```
+
 ## $on 监听自定义事件
 * 作用：在父组件或事件总线中监听事件，并执行回调函数。
 * 语法：this.$on('事件名', 回调函数)
 * 示例（通过事件总线实现跨组件通信）：
+
 ```javascript
 // 创建事件总线（event-bus.js）
 import Vue from 'vue';
@@ -1434,14 +1423,15 @@ export default {
   props: ['value']
 }
 </script>
-
 <!-- 父组件 -->
 <template>
   <ChildComponent v-model="parentData" />
 </template>
 // 说明：v-model 默认监听 input 事件并更新 value 属性
 ```
+
 在 Vue 3 中，推荐使用 defineEmits 声明事件以增强类型安全：
+
 ```javascript
 <!-- 子组件（Vue 3） -->
 <script setup>
@@ -1493,21 +1483,18 @@ const sendMessage = () => {
 ``` typescript
 import axios from 'axios';
 import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-
 // 定义 API 响应的泛型接口
 // interface ApiResponse<T> {
 //   code: number;
 //   message: string;
 //   data: T;
 // }
-
 // 创建 axios 实例
 const instance: AxiosInstance = axios.create({
   baseURL: 'http://127.0.0.1:5000',
   timeout: 5000,
   headers: { 'Content-Type': 'application/json' },
 });
-
 // 请求拦截器
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -1522,7 +1509,6 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 // 响应拦截器
 instance.interceptors.response.use(
   (response: AxiosResponse) => {
@@ -1532,8 +1518,6 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-
 // 封装 GET 请求
 export const get = async <T>(url: string, params?: any): Promise<T> => {
   try {
@@ -1543,7 +1527,6 @@ export const get = async <T>(url: string, params?: any): Promise<T> => {
     return Promise.reject(error);
   }
 };
-
 // 封装 POST 请求
 export const post = async <T>(url: string, data?: any): Promise<T> => {
   try {
@@ -1553,7 +1536,6 @@ export const post = async <T>(url: string, data?: any): Promise<T> => {
     return Promise.reject(error);
   }
 };
-
 export default instance;
 
 ```
@@ -1618,20 +1600,17 @@ const moduleA = {
   actions: { ... },
   getters: { ... }
 }
-
 const moduleB = {
   state: () => ({ ... }),
   mutations: { ... },
   actions: { ... }
 }
-
 const store = createStore({
   modules: {
     a: moduleA,
     b: moduleB
   }
 })
-
 store.state.a // -> moduleA 的状态
 store.state.b // -> moduleB 的状态
 ```
